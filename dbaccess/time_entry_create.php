@@ -1,6 +1,7 @@
 <?php
     require_once 'ticket_list.php';
 
+    //récupère l'id du ticket
     $requestedId = isset($_GET['id']) ? $_GET['id'] : null;
 
     $ticket = null;
@@ -14,7 +15,7 @@
         $ticket = $tickets[0];
     }
 
-    // on gère le traitement du formulaire
+    // créer l'entrée de temps
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $sql = "INSERT INTO Time_Entries (Date, Duration, Comment, Ticket_ID, User_ID) VALUES (:Date, :Duration, :Comment, :Ticket_ID, :User_ID);";
         $stmt = $pdo->prepare($sql);
@@ -28,6 +29,6 @@
         ]);
     }
 
-
+    //renvoie au détails du ticket
     header("location:../ticket_details.php?id={$ticket['Ticket_ID']}");
 ?>

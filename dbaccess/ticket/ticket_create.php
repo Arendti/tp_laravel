@@ -1,16 +1,19 @@
 <?php
     require_once '../ticket_list.php';
 
-    // on gère le traitement du formulaire
+    // créer un nouveau ticket
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        //récupère l'id du projet sélectionné 
         $sql = "SELECT Project_ID FROM Projects WHERE Project_Name=\"" . $_POST["Project_Name"] . "\";";
         $stmt = $pdo->query($sql);
         $project_id = $stmt->fetchAll()[0]['Project_ID'];
         
+        //récupère l'id du dev sélectionné 
         $sql = "SELECT User_ID FROM Users WHERE User_Name=\"" . $_POST["User_Name"] . "\";";
         $stmt = $pdo->query($sql);
         $user_id = $stmt->fetchAll()[0]['User_ID'];
 
+        // créer le ticket
         $sql = "INSERT INTO Tickets (Ticket_Name, Ticket_Description, Status, Priority, Type, Duration_Estimate, Project_ID, User_ID) VALUES (:Ticket_Name, :Ticket_Description, :Status, :Priority, :Type, :Duration_Estimate, :Project_ID, :User_ID);";
         $stmt = $pdo->prepare($sql);
         

@@ -57,7 +57,7 @@
                 </div>
                 <div>
                     <h2>Project : </h2>
-                    <span><?= $ticket['Project_Name'] ?></span>
+                    <span><?= $ticket['Project_Nameexit'] ?></span>
                 </div>
             </div>
 

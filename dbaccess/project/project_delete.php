@@ -1,6 +1,7 @@
 <?php
     require_once '../project_list.php';
 
+    //supprime le projet
     if (isset($_GET["delete"])) {
         $sql = "DELETE FROM Projects WHERE Project_ID = :id";
         $stmt = $pdo->prepare($sql);

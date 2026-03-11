@@ -4,6 +4,7 @@
     $user = "devuser";
     $password = "devpassword";
 
+    //connect la database
     try {
         $pdo = new PDO($dsn, $user, $password, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

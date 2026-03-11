@@ -1,7 +1,7 @@
 <?php
     require_once '../project_list.php';
 
-    // on gère le traitement du formulaire
+    // créer un nouveaux projet
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $sql = "INSERT INTO Projects (Project_Name, Project_Description, Included_Hours, Hourly_Rate, Start_Date, End_Date, Client_ID, Dev_ID, Contract_ID) VALUES (:Project_Name, :Project_Description, :Included_Hours, :Hourly_Rate, :Start_Date, :End_Date, :Client_ID, :Dev_ID, :Contract_ID);";
