@@ -113,7 +113,7 @@
                             <?php foreach ($tickets as $ticket): if ($ticket['Project_ID'] === $project['Project_ID']): ?>
                                 <tr>
                                     <td><a href="ticket_details.php?id=<?= urlencode($ticket['Ticket_ID']) ?>" class="ticket-link"><?= htmlspecialchars($ticket['Ticket_Name']) ?></a></td>
-                                    <td><?= htmlspecialchars($ticket['Time spent']) ?></td>
+                                    <td><?= htmlspecialchars($ticket['Time_Spent']) ?></td>
                                     <td>
                                         <?php $statusClass = 'badge-' . str_replace(' ', '-', strtolower($ticket['Status'])); ?>
                                         <span class="badge <?= $statusClass ?>"><?= htmlspecialchars($ticket['Status']) ?></span>

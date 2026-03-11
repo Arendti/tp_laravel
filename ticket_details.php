@@ -107,7 +107,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?= $ticket['Time spent'] ?></td>
+                            <td><?= $ticket['Time_Spent'] ?></td>
                             <td><?= $ticket['Duration_Estimate'] ?></td>
                         </tr>
                     </tbody>
