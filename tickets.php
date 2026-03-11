@@ -75,7 +75,7 @@
                         <tr>
                             <td><?= htmlspecialchars($ticket['Ticket_ID']) ?></td>
                             <td><a href="ticket_details.php?id=<?= urlencode($ticket['Ticket_ID']) ?>" class="ticket-link"><?= htmlspecialchars($ticket['Ticket_Name']) ?></a></td>
-                            <td><a href="project_details.php?id=<?= urlencode($ticket['Project_ID']) ?>" class="ticket-link"><?= htmlspecialchars($ticket['Project_ID']) ?></a></td>
+                            <td><a href="project_details.php?id=<?= urlencode($ticket['Project_ID']) ?>" class="ticket-link"><?= htmlspecialchars($ticket['Project_Name']) ?></a></td>
                             <td><?= htmlspecialchars($ticket['Ticket_Description']) ?></td>
                             <td>
                                 <?php $statusClass = 'badge-' . str_replace(' ', '-', strtolower($ticket['Status'])); ?>

@@ -18,7 +18,7 @@
     $sql = "SELECT * FROM Tickets";
     $stmt = $pdo->query($sql);
     $tickets = $stmt->fetchAll();
-    
+
     foreach ($tickets as &$ticket){
         $times=[];
         foreach ($timeentries as $entry){
@@ -26,7 +26,13 @@
                 $times[] = $entry['Duration'];
             }
         }
-        $ticket['Time_Spent']=sumTime($times);
+        $ticket['Time_Spent'] = sumTime($times);
+
+        
+        $sql = "SELECT Project_Name FROM Projects WHERE Project_ID=:Project_ID";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([":Project_ID" => $ticket['Project_ID'] ]);
+        $ticket['Project_Name'] = $stmt->fetchAll()[0]['Project_Name'];
     }
     unset($ticket);
 ?>
