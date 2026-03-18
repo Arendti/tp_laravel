@@ -20,7 +20,7 @@
             <ul class="nav-links">
                 <li><a href="dashboard.php" class="active">Dashboard</a></li>
                 <li><a href="projects.php">Projects</a></li>
-                <li><a href="tickets.php">Tickets</a></li>
+                <li><a href="ticket_index.php">Tickets</a></li>
                 <li><a href="profile.php">Profile</a></li>
                 <li><a href="parameters.php">Parameters</a></li>
                 <li><a href="login.php" class="logout">Logout</a></li>
