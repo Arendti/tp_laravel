@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->string('ticket_title');
             $table->string('ticket_description');
-            $table->string('ticket_status');
-            $table->string('ticket_priority');
+            $table->enum('ticket_status', ['new', 'in progress', 'waiting client', 'done', 'waiting validation', 'validated', 'refused'])->default('new');
+            $table->enum('ticket_priority', ['low', 'medium', 'high'])->default('low');
             $table->boolean('ticket_included');
             $table->timestamps();
         });

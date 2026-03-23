@@ -10,7 +10,9 @@ class TicketController extends Controller
 {
     public function tickets()
     {
-        return view('tickets.tickets');
+        return view('tickets.tickets', [
+            "tickets" => Ticket::where('user_id', auth()->id())->get(),
+        ]);
     }
 
     public function new_ticket()
