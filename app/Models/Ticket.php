@@ -26,7 +26,8 @@ class Ticket extends Model
     
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'ticket_assignement');
+        // Use the existing migration pivot table name
+        return $this->belongsToMany(User::class, 'ticket_assignements');
     }
 
     public function entries(): HasMany

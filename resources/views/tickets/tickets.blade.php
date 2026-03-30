@@ -48,18 +48,8 @@
             @foreach($tickets as $ticket)
                 <tr>
                     <td>{{ $ticket->id }}</td>
-                    <td>{{ $ticket->user->name }}</td>
-                    <td>{{ $ticket->title }}</td>
-                    <td class="ticket-actions-cell">
-                        <a href="{{ route('tickets.show', $ticket->id) }}">voir</a>
-                        <a href="{{ route('tickets.edit', $ticket->id) }}">modifier</a>
-                        <form action="{{ route('tickets.destroy') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="id" value="{{ $ticket->id }}">
-                            <button type="submit">supprimer</button>
-                        </form>
-                    </td>
+                    <td>{{ $ticket->ticket_title }}</td>
+                    <td>{{ $ticket->project->project_title }}</td>
                 </tr>
             @endforeach
             </tbody>

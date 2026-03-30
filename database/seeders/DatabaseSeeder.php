@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Models\Time_Entry;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -57,18 +58,16 @@ class DatabaseSeeder extends Seeder
         // ─── Tickets ──────────────────────────────────────────
         $tickets = [];
         foreach ($projectIds as $projectId) {
-            $ticketCount = fake()->numberBetween(3, 8);
 
-            for ($i = 0; $i < $ticketCount; $i++) {
-                $tickets[] = [
+            for ($i = 0; $i < 5; $i++) {
+                Ticket::create([
                     'project_id'         => $projectId,
                     'ticket_title'       => fake()->sentence(5),
                     'ticket_description' => fake()->paragraph(2),
                     'ticket_status'      => fake()->randomElement($ticketStatuses),
                     'ticket_priority'    => fake()->randomElement($ticketPriorities),
                     'ticket_included'    => fake()->boolean(75), // 75% chance true
-                ];
-                Ticket::create($tickets[$i]);
+                ]);
             }
         }
 
@@ -89,5 +88,32 @@ class DatabaseSeeder extends Seeder
                 Time_Entry::create($timeEntries[$i]);
             }
         }
+
+        // Populate the ticket_user pivot table from time entry activity
+        Time_Entry::query()
+            ->select('user_id', 'ticket_id')
+            ->distinct()
+            ->each(function ($entry) {
+                DB::table('ticket_assignements')->updateOrInsert(
+                    [
+                        'user_id' => $entry->user_id,
+                        'ticket_id' => $entry->ticket_id,
+                    ],
+                    [
+                        'updated_at' => now(),
+                        'created_at' => now(),
+                    ]
+                );
+            });
+
+        // User::all()->each(function ($user) {
+        //     // Pick 1–3 random roles for each user
+        //     $roleIds = Role::inRandomOrder()
+        //         ->take(rand(1, 3))
+        //         ->pluck('id');
+
+        //     // Attach to pivot table without removing existing
+        //     $user->tickets()->syncWithoutDetaching($roleIds);
+        // });
     }
 }

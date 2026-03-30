@@ -4,14 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\Ticket;
+use App\Models\User;
 
 
 class TicketController extends Controller
 {
     public function tickets()
     {
+        $user = auth()->user();
+        if ($user->role == 'Admin'){
+            $tickets = Ticket::all();
+        }
+        elseif ($user->role == 'Dev'){
+            $tickets = $user->tickets;
+        }
+
         return view('tickets.tickets', [
-            "tickets" => Ticket::where('user_id', auth()->id())->get(),
+            "tickets" => $tickets, //Ticket::where('user_id', auth()->id())->get(),
         ]);
     }
 
