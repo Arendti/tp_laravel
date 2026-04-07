@@ -34,4 +34,9 @@ class Ticket extends Model
     {
         return $this->hasMany(Time_Entry::class);
     }
-}
+
+    public function included(): string
+    {
+        return ($this->ticket_included) ? "included" : "chargeable";
+    }
+ }

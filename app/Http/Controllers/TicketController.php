@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Project;
 
 
 class TicketController extends Controller
@@ -21,13 +22,23 @@ class TicketController extends Controller
         }
 
         return view('tickets.tickets', [
-            "tickets" => $tickets, //Ticket::where('user_id', auth()->id())->get(),
+            "tickets" => $tickets, 
         ]);
     }
 
     public function new_ticket()
     {
-        return view('tickets.new_ticket');
+        $user = auth()->user();
+        if ($user->role == 'Admin'){
+            $projects = Project::all();
+        }
+        elseif ($user->role == 'Dev'){
+            $projects = $user->projects;
+        }
+
+        return view('tickets.new_ticket', [
+            "projects" => $projects,
+        ]);
     }
 
     public function show($id)

@@ -41,7 +41,7 @@
                     <th>Description</th>
                     <th>Status</th>
                     <th>Priority</th>
-                    <th>Type</th>
+                    <th>Included</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,16 +50,14 @@
                     <td>{{ $ticket->id }}</td>
                     <td>{{ $ticket->ticket_title }}</td>
                     <td>{{ $ticket->project->project_title }}</td>
+                    <td>{{ $ticket->ticket_description }}</td>
+                    <td><span class="badge badge-{{ str_replace(' ', '-',$ticket->ticket_status) }}" >{{ $ticket->ticket_status }}</span></td>
+                    <td><span class="priority priority-{{ $ticket->ticket_priority }}" >{{ $ticket->ticket_priority }}</span></td>
+                    <td><span class="type type-{{ $ticket->included() }}" >{{ $ticket->included() }}</span></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-
-        <div class="pagination">
-            <button class="btn-page">&laquo; Previous</button>
-            <span class="page-info">Page 1 of 5</span>
-            <button class="btn-page">Next &raquo;</button>
-        </div>
     </section>
 </main>
 @endsection

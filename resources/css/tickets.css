@@ -101,12 +101,12 @@
     color: #5d5d5d;
 }
 
-.badge-to-be-approved {
+.badge-waiting-validation {
     background-color: #f7fcdc;
     color: #5c6516;
 }
 
-.badge-approved {
+.badge-validated {
     background-color: #dcfce7;
     color: #166534;
 }

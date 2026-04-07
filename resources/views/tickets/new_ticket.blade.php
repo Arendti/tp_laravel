@@ -21,6 +21,9 @@
                     <label for="ticket-project">Project <span class="required">*</span></label>
                     <select id="ticket-project" name="Project_Name">
                         <option value="">Select a project</option>
+                        @foreach($projects as $project)
+                            <option value="{{ $project->id }}">{{ $project->project_title }}</option>
+                        @endforeach
                     </select>
                     <div class="error-text titanic" id="project-error">Project selection is required.</div>
                 </div>
@@ -41,9 +44,9 @@
                         <select id="ticket-status" name="Status">
                             <option value="">Select status</option>
                             <option value="new">New</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="waiting-client">Waiting Client</option>
-                            <option value="to-be-approved">To Be Approved</option>
+                            <option value="in progress">In Progress</option>
+                            <option value="waiting client">Waiting Client</option>
+                            <option value="waiting validation">Waiting validation</option>
                             <option value="done">Done</option>
                             <option value="refused">Refused</option>
                         </select>
@@ -66,8 +69,8 @@
                         <label for="ticket-type">Type <span class="required">*</span></label>
                         <select id="ticket-type" name="Type">
                             <option value="">Select type</option>
-                            <option value="included">Included</option>
-                            <option value="chargeable">Chargeable</option>
+                            <option value="1">Included</option>
+                            <option value="0">Chargeable</option>
                         </select>
                         <div class="error-text titanic" id="type-error">Type selection is required.</div>
                     </div>
@@ -77,14 +80,6 @@
                         <input type="time" id="ticket-estimate" name="Duration_Estimate">
                     </div>
 
-                </div>
-
-                <div class="form-group">
-                    <label for="ticket-assigned">Assign To <span class="required">*</span></label>
-                    <select id="ticket-assigned" name="User_Name">
-                        <option value="">Select team member</option>
-                    </select>
-                    <div class="error-text titanic" id="assigned-error">Assignment is required.</div>
                 </div>
             </div>
 
