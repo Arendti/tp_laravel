@@ -10,13 +10,13 @@
 
         <div class="ticket-header">
             <div>
-                <h2>ID : </h2>
+                <h2>ID : {{ $ticket->id }}</h2>
             </div>
             <div>
-                <h2>Title : </h2>
+                <h2>Title : {{ $ticket->ticket_title }}</h2>
             </div>
             <div>
-                <h2>Project : </h2>
+                <h2>Project : {{ $ticket->project->project_title }}</h2>
             </div>
         </div>
 

@@ -56,7 +56,6 @@ class DatabaseSeeder extends Seeder
         $projectIds = Project::all()->pluck('id')->toArray();
 
         // ─── Tickets ──────────────────────────────────────────
-        $tickets = [];
         foreach ($projectIds as $projectId) {
 
             for ($i = 0; $i < 5; $i++) {
@@ -74,18 +73,16 @@ class DatabaseSeeder extends Seeder
         $ticketIds = Ticket::all()->pluck('id')->toArray();
 
         // ─── Time Entries ─────────────────────────────────────
-        $timeEntries = [];
         foreach ($ticketIds as $ticketId) {
             $entryCount = fake()->numberBetween(1, 5);
 
             for ($i = 0; $i < $entryCount; $i++) {
-                $timeEntries[] = [
+                Time_Entry::create([
                     'user_id'   => fake()->randomElement($devIds),
                     'ticket_id' => $ticketId,
                     'comment'   => fake()->sentence(8),
-                    'length'    => fake()->randomFloat(2, 0.25, 8), // hours, e.g. 0.25–8.00
-                ];
-                Time_Entry::create($timeEntries[$i]);
+                    'length'    => fake()->numberBetween(1, 8),
+                ]);
             }
         }
 

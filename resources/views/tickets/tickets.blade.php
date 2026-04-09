@@ -48,7 +48,7 @@
             @foreach($tickets as $ticket)
                 <tr>
                     <td>{{ $ticket->id }}</td>
-                    <td>{{ $ticket->ticket_title }}</td>
+                    <td><a href="{{ route('tickets.show', $ticket->id) }}">{{ $ticket->ticket_title }}</a></td>
                     <td>{{ $ticket->project->project_title }}</td>
                     <td>{{ $ticket->ticket_description }}</td>
                     <td><span class="badge badge-{{ str_replace(' ', '-',$ticket->ticket_status) }}" >{{ $ticket->ticket_status }}</span></td>

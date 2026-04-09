@@ -32,6 +32,15 @@ class Project extends Model
     
     public function tickets(): HasMany
     {
-        return $this->hasMany(Tickets::class);
+        return $this->hasMany(Ticket::class);
+    }
+    
+    public function length(): unsignedInteger
+    {
+        $sum = 0;
+        foreach ($this->tickets as $ticket){
+            $sum += $ticket->length; 
+        }
+        return $sum;
     }
 }

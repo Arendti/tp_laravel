@@ -39,4 +39,13 @@ class Ticket extends Model
     {
         return ($this->ticket_included) ? "included" : "chargeable";
     }
+
+    public function length(): int
+    {
+        $sum = 0;
+        foreach ($this->entries as $entry){
+            $sum += $entry->length; 
+        }
+        return $sum;
+    }
  }

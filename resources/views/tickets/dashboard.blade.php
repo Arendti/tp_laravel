@@ -6,21 +6,15 @@
         <h2>Welcome to Ticketing Service</h2>
         <div class="stats-container">
             <div class="stat-card">
-                <h3>5</h3>
+                <h3>{{$projectCount}}</h3>
                 <p>Active Projects</p>
             </div>
+            @foreach($statusCounts as $status => $count)
             <div class="stat-card">
-                <h3>23</h3>
-                <p>Open Tickets</p>
+                <h3>{{$count}}</h3>
+                <p>{{$status}}</p>
             </div>
-            <div class="stat-card">
-                <h3>12</h3>
-                <p>In Progress</p>
-            </div>
-            <div class="stat-card">
-                <h3>8</h3>
-                <p>Closed Tickets</p>
-            </div>
+            @endforeach
         </div>
 
         <div class="recent-section">
@@ -37,7 +31,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                @foreach($tickets as $ticket)
+                    <tr>
+                        <td>{{ $ticket->id }}</td>
+                        <td>{{ $ticket->ticket_title }}</td>
+                        <td>{{ $ticket->project->project_title }}</td>
+                        <td><span class="badge badge-{{ str_replace(' ', '-',$ticket->ticket_status) }}" >{{ $ticket->ticket_status }}</span></td>
+                        <td><span class="priority priority-{{ $ticket->ticket_priority }}" >{{ $ticket->ticket_priority }}</span></td>
+                        <td><span class="type type-{{ $ticket->included() }}" >{{ $ticket->included() }}</span></td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

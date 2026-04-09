@@ -5,7 +5,7 @@
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ route('dashboard') }}">Projects</a></li>
+            <li><a href="{{ route('projects') }}">Projects</a></li>
             <li><a href="{{ route('tickets') }}">Tickets</a></li>
             <li><a href="{{ route('dashboard') }}">Profile</a></li>
             <li><a href="{{ route('dashboard') }}">Parameters</a></li>

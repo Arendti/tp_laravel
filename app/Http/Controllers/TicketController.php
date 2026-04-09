@@ -26,6 +26,39 @@ class TicketController extends Controller
         ]);
     }
 
+    public function dashboard()
+    {
+        $user = auth()->user();
+        if ($user->role == 'Admin'){
+            $tickets = Ticket::all();
+        }
+        elseif ($user->role == 'Dev'){
+            $tickets = $user->tickets;
+        }
+        $statusCounts = [
+            'new' => 0,
+            'in progress' => 0,
+            'waiting client' => 0,
+            'done' => 0,
+            'waiting validation' => 0,
+            'validated' => 0,
+            'refused' => 0,
+        ];
+
+        $projects = [];
+
+        foreach ($tickets as $ticket){
+            $statusCounts[$ticket->ticket_status]++;
+            $projects[$ticket->project->project_title] = "";
+        }
+
+        return view('tickets.dashboard', [
+            "tickets" => $tickets,
+            "statusCounts" => $statusCounts,
+            "projectCount" => count($projects),
+        ]);
+    }
+
     public function new_ticket()
     {
         $user = auth()->user();
