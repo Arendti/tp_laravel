@@ -5,7 +5,7 @@
     <section class="page-section">
         <div class="page-header">
             <h2>Ticket details</h2>
-            <a href="tickets.php" class="return-button">Take me back</a>
+            <a href="{{ route('tickets') }}" class="return-button">Take me back</a>
         </div>
 
         <div class="ticket-header">
@@ -30,6 +30,9 @@
             </thead>
             <tbody>
                 <tr>
+                    <td><span class="badge badge-{{ str_replace(' ', '-',$ticket->ticket_status) }}" >{{ $ticket->ticket_status }}</span></td>
+                    <td><span class="priority priority-{{ $ticket->ticket_priority }}" >{{ $ticket->ticket_priority }}</span></td>
+                    <td><span class="type type-{{ $ticket->included() }}" >{{ $ticket->included() }}</span></td>
                 </tr>
             </tbody>
         </table>
@@ -43,6 +46,10 @@
             </thead>
             <tbody>
                 <tr>
+                    <td>{{ $ticket->ticket_description }}</td>
+                    <td>@foreach($devs as $dev)
+                        {{ $dev->name }} <br>
+                    @endforeach</td>
                 </tr>
             </tbody>
         </table>
@@ -53,13 +60,11 @@
                 <thead>
                     <tr>
                         <th>Time spent</th>
-                        <th>Time estimate</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?= $ticket['Time_Spent'] ?></td>
-                        <td><?= $ticket['Duration_Estimate'] ?></td>
+                        <td>{{$ticket->length()}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -74,6 +79,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($ticket->entries as $entry)
+                        <tr>
+                            <td>{{$entry->created_at}}</td>
+                            <td>{{$entry->length}}</td>
+                            <td>{{$entry->comment}}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
 

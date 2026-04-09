@@ -76,14 +76,19 @@ class TicketController extends Controller
 
     public function show($id)
     {
-        $ticket = Ticket::find($id);
-
-        if(auth()->id() != $ticket->user_id) {
-            return redirect()->route('tickets.index');
+        $ticket = Ticket::find($id);     
+        
+        $user = auth()->user();
+        
+        if ($user->role != 'Admin' && !in_array($user, $ticket->users)){
+            return redirect()->route('tickets');
         }
+
+        $devs = $ticket->devs();
 
         return view('tickets.show', [
             "ticket" => $ticket,
+            "devs" => $devs,
         ]);
     }
 }
