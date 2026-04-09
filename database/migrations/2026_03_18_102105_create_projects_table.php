@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('project_title');
             $table->string('project_description');
             $table->unsignedInteger('included_hours');
+            $table->float('hourly_rate', 8, 2);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

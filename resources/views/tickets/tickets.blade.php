@@ -15,7 +15,8 @@
                 <option value="new">New</option>
                 <option value="in progress">In Progress</option>
                 <option value="waiting client">Waiting Client</option>
-                <option value="to be approved">To Be Approved</option>
+                <option value="waiting validation">Waiting Validation</option>
+                <option value="validated">Validated</option>
                 <option value="done">Done</option>
                 <option value="refused">Refused</option>
             </select>
@@ -49,7 +50,7 @@
                 <tr>
                     <td>{{ $ticket->id }}</td>
                     <td><a href="{{ route('tickets.show', $ticket->id) }}">{{ $ticket->ticket_title }}</a></td>
-                    <td>{{ $ticket->project->project_title }}</td>
+                    <td><a href="{{ route('projects.show', $ticket->project->id)}}">{{ $ticket->project->project_title }}</a></td>
                     <td>{{ $ticket->ticket_description }}</td>
                     <td><span class="badge badge-{{ str_replace(' ', '-',$ticket->ticket_status) }}" >{{ $ticket->ticket_status }}</span></td>
                     <td><span class="priority priority-{{ $ticket->ticket_priority }}" >{{ $ticket->ticket_priority }}</span></td>

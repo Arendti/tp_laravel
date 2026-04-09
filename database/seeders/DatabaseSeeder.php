@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
                 'project_title'       => fake()->catchPhrase(),
                 'project_description' => fake()->paragraph(3),
                 'included_hours'      => fake()->randomElement([50, 100, 150, 200, 300]),
+                'hourly_rate'         => fake()->randomFloat(2, 10, 99),
                 'start_date'          => $start->format('Y-m-d'),
                 'end_date'            => $end->format('Y-m-d'),
             ];

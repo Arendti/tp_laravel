@@ -94,11 +94,11 @@ header {
     background-color: var(--primary-color);
 }
 
-.nav-links a.logout {
+.nav-links button.logout {
     color: var(--danger-color);
 }
 
-.nav-links a.logout:hover {
+.nav-links button.logout:hover {
     color: #dc2626;
 }
 

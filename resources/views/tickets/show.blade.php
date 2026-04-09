@@ -16,7 +16,7 @@
                 <h2>Title : {{ $ticket->ticket_title }}</h2>
             </div>
             <div>
-                <h2>Project : {{ $ticket->project->project_title }}</h2>
+                <h2>Project : <a href="{{ route('projects.show', $ticket->project->id)}}">{{ $ticket->project->project_title }}</a></h2>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{$ticket->length()}}</td>
+                        <td>{{$ticket->length()}}h</td>
                     </tr>
                 </tbody>
             </table>
@@ -82,7 +82,7 @@
                     @foreach($ticket->entries as $entry)
                         <tr>
                             <td>{{$entry->created_at}}</td>
-                            <td>{{$entry->length}}</td>
+                            <td>{{$entry->length}}h</td>
                             <td>{{$entry->comment}}</td>
                         </tr>
                     @endforeach

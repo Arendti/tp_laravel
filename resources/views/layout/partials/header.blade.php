@@ -7,9 +7,11 @@
             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ route('projects') }}">Projects</a></li>
             <li><a href="{{ route('tickets') }}">Tickets</a></li>
-            <li><a href="{{ route('dashboard') }}">Profile</a></li>
-            <li><a href="{{ route('dashboard') }}">Parameters</a></li>
-            <li><a href="{{ route('dashboard') }}" class="logout">Logout</a></li>
+            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="logout">Logout</button>
+            </form>
         </ul>
     </nav>
 </header>

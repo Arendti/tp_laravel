@@ -5,16 +5,16 @@
     <section class="page-section">
         <div class="page-header">
             <h2>Projects</h2>
-            <a href="new_project.php" class="btn btn-primary">+ New Project</a>
+            <a href="{{ route('new_project') }}" class="btn btn-primary">+ New Project</a>
         </div>
 
         <div class="search-bar">
-            <input type="text" class="project-search-input" placeholder="Search projects...">
+            <input type="text" class="project-search-input" name="project-search-input" placeholder="Search projects...">
         </div>
 
         <div class="projects-grid">
             <?php foreach ($projects as $project): ?>
-                <div class="project-card">
+                <div class="project-card" data-url="{{ route('projects.show', $project->id)}}">
                     <h3 class="project-title">{{$project->project_title}}</h3>
                     <p class="project-description">{{$project->project_description}}</p>
                     
@@ -31,8 +31,8 @@
                             <tbody>
                             @foreach($tickets[$project->project_title] as $ticket)
                                 <tr>
-                                    <td>{{ $ticket->ticket_title }}</td>
-                                    <td>{{ $ticket->length() }}</td>
+                                    <td><a href="{{ route('tickets.show', $ticket->id) }}">{{ $ticket->ticket_title }}</a></td>
+                                    <td>{{ $ticket->length() }}h</td>
                                     <td><span class="type type-{{ $ticket->included() }}" >{{ $ticket->included() }}</span></td>
                                 </tr>
                             @endforeach

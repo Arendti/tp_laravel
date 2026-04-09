@@ -16,6 +16,7 @@ class Project extends Model
         "project_title",
         "project_description",
         "included_hours",
+        "hourly_rate",
         "start_date",
         "end_date"
     ];
@@ -25,9 +26,14 @@ class Project extends Model
         return $this->belongsTo(User::class);
     }
     
+    public function isAssigned(): bool
+    {
+        return $this->belongsToMany(User::class, "project_assignements")->exists();
+    }
+    
     public function devs(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, "project_assignement");
+        return $this->belongsToMany(User::class, "project_assignements");
     }
     
     public function tickets(): HasMany
@@ -35,11 +41,11 @@ class Project extends Model
         return $this->hasMany(Ticket::class);
     }
     
-    public function length(): unsignedInteger
+    public function length(): int
     {
         $sum = 0;
         foreach ($this->tickets as $ticket){
-            $sum += $ticket->length; 
+            $sum += $ticket->length(); 
         }
         return $sum;
     }
