@@ -47,12 +47,23 @@
             <tbody>
                 <tr>
                     <td>{{ $ticket->ticket_description }}</td>
-                    <td>@foreach($devs as $dev)
+                    <td>@if ($isAssigned) @foreach($devs as $dev)
                         {{ $dev->name }} <br>
-                    @endforeach</td>
+                    @endforeach
+                    @else Not Assigned @endif </td>
                 </tr>
             </tbody>
         </table>
+
+        <div class="ticket-header">
+            <form action="{{ route('tickets.destroy') }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="id" value="{{ $ticket->id }}">
+                <button type="submit" class="submit-button">delete</button>
+            </form>
+            <a href="{{ route('tickets.edit', $ticket->id) }}" class="submit-button">Edit</a>
+        </div>
 
         <section class="time-entries">
             <table class="tickets-table">
@@ -76,6 +87,7 @@
                         <th>Date</th>
                         <th>Duration</th>
                         <th>Comment</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,6 +96,12 @@
                             <td>{{$entry->created_at}}</td>
                             <td>{{$entry->length}}h</td>
                             <td>{{$entry->comment}}</td>
+                            <td><form action="{{ route('tickets.removeEntry') }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="id" value="{{ $entry->id }}">
+                                <button type="submit" class="submit-button">delete</button>
+                            </form></td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -91,7 +109,9 @@
 
             <div class="add-time-entry">
                 <h4>Add New Time Entry</h4>
-                <form class="time-entry-form" id="time-entry-form" action="dbaccess/time_entry_create.php?id=<?= $ticket['Ticket_ID'] ?>" method="POST">
+                <form class="time-entry-form" id="time-entry-form" action="{{ route('tickets.addEntry', $ticket->id)}}" method="POST">
+                    @csrf
+                    @method('PUT')
                     <div class="form-group">
                         <label for="entry-date">Date:</label>
                         <input type="date" id="entry-date" name="Date">

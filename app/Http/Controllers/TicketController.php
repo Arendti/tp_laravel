@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Project;
+use App\Models\Time_Entry;
 
 
 class TicketController extends Controller
@@ -74,21 +75,178 @@ class TicketController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        $user = auth()->user();
+        
+        if ($user->role != 'Admin' && $user->role != 'Dev'){
+            return redirect()->route('tickets');
+        }
+
+        $validated = $request->validate([
+            'Project_Name' => ['required', 'integer'],
+            'Ticket_Name' => ['required', 'string', 'max:255'],
+            'Ticket_Description' => ['required', 'string', 'max:255'],
+            'Status' => ['required', 'string', 'max:255'],
+            'Priority' => ['required', 'string', 'max:255'],
+            'Type' => ['required', 'string'],
+        ]);
+
+        $ticket = Ticket::create([
+            "project_id" => $validated['Project_Name'],
+            "ticket_title" => $validated['Ticket_Name'],
+            "ticket_description" => $validated['Ticket_Description'],
+            "ticket_status" => $validated['Status'],
+            "ticket_priority" => $validated['Priority'],
+            "ticket_included" => $validated['Type'],
+        ]);
+
+        $ticket->users()->attach($user->id); // Attach the authenticated user
+
+        return redirect()->route('tickets');
+    }
+
+    public function addEntry(Request $request, $id)
+    {
+        $user = auth()->user();
+        $ticket = Ticket::find($id);
+        
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+            return redirect()->route('tickets');
+        }
+
+        $validated = $request->validate([
+            'Date' => ['required', 'date'],
+            'Duration' => ['required', 'regex:/^\d{2}:\d{2}$/'], // HH:MM format
+            'Comment' => ['nullable', 'string'],
+        ]);
+
+        // Convert HH:MM to decimal hours
+        list($hours, $minutes) = explode(':', $validated['Duration']);
+        $length = (int)$hours;
+
+        Time_Entry::create([
+            'user_id' => $user->id,
+            'ticket_id' => $id,
+            'date' => $validated['Date'],
+            'length' => $length,
+            'comment' => $validated['Comment'],
+        ]);
+
+        return redirect()->route('tickets.show', $id);
+    }
+
+    public function removeEntry(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => ['required', 'integer', 'exists:time_entries,id'],
+        ]);
+
+        $entry = Time_Entry::findOrFail($validated['id']);
+
+        $user = auth()->user();
+
+        $ticket = $entry->ticket;
+        
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+            return redirect()->route('tickets');
+        }
+
+        $entry->delete();
+
+        return redirect()->route('tickets.show', $ticket->id);
+    }
+
     public function show($id)
     {
         $ticket = Ticket::find($id);     
         
         $user = auth()->user();
         
-        if ($user->role != 'Admin' && !in_array($user, $ticket->users)){
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
             return redirect()->route('tickets');
         }
 
-        $devs = $ticket->devs();
+        $isAssigned = $ticket->isAssigned();
+        $devs = $ticket->users;
 
         return view('tickets.show', [
             "ticket" => $ticket,
+            "isAssigned" => $isAssigned,
             "devs" => $devs,
         ]);
+    }
+
+    public function edit($id)
+    {
+        $ticket = Ticket::find($id);     
+        
+        $user = auth()->user();
+        
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+            return redirect()->route('tickets');
+        }
+
+        if ($user->role == 'Admin'){
+            $projects = Project::all();
+        }
+        elseif ($user->role == 'Dev'){
+            $projects = $user->projects;
+        }
+
+        return view('tickets.edit', [
+            "ticket" => $ticket,
+            "projects" => $projects,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $ticket = Ticket::find($id);     
+        
+        $user = auth()->user();
+        
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+            return redirect()->route('tickets');
+        }
+
+        $validated = $request->validate([
+            'Project_Name' => ['required', 'integer'],
+            'Ticket_Name' => ['required', 'string', 'max:255'],
+            'Ticket_Description' => ['required', 'string', 'max:255'],
+            'Status' => ['required', 'string', 'max:255'],
+            'Priority' => ['required', 'string', 'max:255'],
+            'Type' => ['required', 'string'],
+        ]);
+
+        $ticket->update([
+            "project_id" => $validated['Project_Name'],
+            "ticket_title" => $validated['Ticket_Name'],
+            "ticket_description" => $validated['Ticket_Description'],
+            "ticket_status" => $validated['Status'],
+            "ticket_priority" => $validated['Priority'],
+            "ticket_included" => $validated['Type'],
+        ]);
+
+        return redirect()->route('tickets.show', $id);
+    }
+
+    public function destroy(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => ['required', 'integer', 'exists:tickets,id'],
+        ]);
+
+        $ticket = Ticket::findOrFail($validated['id']);
+
+        $user = auth()->user();
+        
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+            return redirect()->route('tickets');
+        }
+
+        $ticket->delete();
+
+        return redirect()->route('tickets');
     }
 }

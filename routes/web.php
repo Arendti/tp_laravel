@@ -28,18 +28,23 @@ require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [TicketController::class, 'dashboard'])->name('dashboard');
+
     Route::get('/tickets', [TicketController::class, 'tickets'])->name('tickets');
     Route::get('/new_ticket', [TicketController::class, 'new_ticket'])->name('new_ticket');
+    Route::post('/tickets/store', [TicketController::class, 'store'])->name('tickets.store');
+    Route::put('/tickets/{id}/addEntry', [TicketController::class, 'addEntry'])->name('tickets.addEntry');
+    Route::delete('/tickets/removeEntry', [TicketController::class, 'removeEntry'])->name('tickets.removeEntry');
     Route::get('/tickets/{id}/show', [TicketController::class, 'show'])->name('tickets.show');
+    Route::get('/tickets/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
+    Route::put('/tickets/{id}/update', [TicketController::class, 'update'])->name('tickets.update');
+    Route::delete('/tickets/destroy', [TicketController::class, 'destroy'])->name('tickets.destroy');
 
     Route::get('/projects', [ProjectController::class, 'projects'])->name('projects');
     Route::get('/new_project', [ProjectController::class, 'new_project'])->name('new_project');
+    Route::post('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('/projects/{id}/show', [ProjectController::class, 'show'])->name('projects.show');
+    Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/{id}/update', [ProjectController::class, 'update'])->name('projects.update');
+    Route::delete('/projects/destroy', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
-    // Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
-    // Route::post('/tickets/store', [TicketController::class, 'store'])->name('tickets.store');
-    // Route::get('/tickets/{id}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
-    // Route::put('/tickets/{id}/update', [TicketController::class, 'update'])->name('tickets.update');
-    // Route::delete('/tickets', [TicketController::class, 'destroy'])->name('tickets.destroy');
-    // Route::get('/contact', [TicketController::class, 'contact'])->name('tickets.contact');
 });

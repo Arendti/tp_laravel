@@ -30,9 +30,9 @@ class Ticket extends Model
         return $this->belongsToMany(User::class, 'ticket_assignements');
     }
 
-    public function devs(): Collection 
+    public function isAssigned(): bool
     {
-        return $this->belongsToMany(User::class, 'ticket_assignements')->where('role', 'Dev')->get();
+        return $this->belongsToMany(User::class, "ticket_assignements")->exists();
     }
 
     public function entries(): HasMany

@@ -11,7 +11,7 @@
 
         <div class="project-details">
             <h3>{{ $project->project_title }}</h3>
-            <p class="project-description">{{ $project->project_descriptions }}</p>
+            <p class="project-description">{{ $project->project_description }}</p>
             <div class="project-meta">
                 <table>
                     <tbody>
@@ -86,11 +86,20 @@
                     </tbody>
                 </table>
                 <br>
-                <a href="{{ route('new_ticket') }}" class="btn btn-primary">+ New Ticket</a>
+                <a href="{{ route('new_ticket') }}" class="submit-button">+ New Ticket</a>
             </div>
             
             <div class="project-stats">
-                {{-- <a href="dbaccess/project/project_delete.php?delete={{ $project['Project_ID'] }}" class="btn-small btn-view">Delete Project</a> --}}
+                <form action="{{ route('projects.destroy') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="id" value="{{ $project->id }}">
+                    <button type="submit" class="submit-button">delete</button>
+                </form>
+            </div>
+
+            <div class="project-stats">
+                <a href="{{ route('projects.edit', $project->id) }}" class="submit-button">Edit</a>
             </div>
         </div>
     </section>
