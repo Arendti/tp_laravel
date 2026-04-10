@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -47,4 +48,5 @@ Route::middleware('auth')->group(function () {
     Route::put('/projects/{id}/update', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/destroy', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
+    Route::get('/users', [UserController::class, 'users'])->name('users');
 });

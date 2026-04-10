@@ -76,6 +76,7 @@ class TicketController extends Controller
             "tickets" => $tickets,
             "statusCounts" => $statusCounts,
             "projectCount" => count($projects),
+            "role" => $user->role,
         ]);
     }
 

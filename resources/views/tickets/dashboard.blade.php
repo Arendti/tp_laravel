@@ -4,6 +4,9 @@
 <main class="dashboard">
     <section class="dashboard-content">
         <h2>Welcome to Ticketing Service</h2>
+
+        @if ($role=="Admin") <a href="{{ route('users') }}" class="btn btn-primary">Users</a>  @endif
+
         <div class="stats-container">
             <div class="stat-card">
                 <h3>{{$projectCount}}</h3>
