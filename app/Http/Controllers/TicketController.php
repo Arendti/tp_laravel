@@ -35,6 +35,7 @@ class TicketController extends Controller
         return view('tickets.tickets', [
             "tickets" => $tickets, 
             "projects" => $projects,
+            "role" => $user->role,
         ]);
     }
 
@@ -243,6 +244,7 @@ class TicketController extends Controller
             "ticket" => $ticket,
             "isAssigned" => $isAssigned,
             "devs" => $devs,
+            "role" => $user->role,
         ]);
     }
 

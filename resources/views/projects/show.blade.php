@@ -86,21 +86,21 @@
                     </tbody>
                 </table>
                 <br>
-                <a href="{{ route('new_ticket') }}" class="submit-button">+ New Ticket</a>
+                @if ($role=="Admin" || $role=="Dev"): <a href="{{ route('new_ticket') }}" class="submit-button">+ New Ticket</a> @endif
             </div>
             
-            <div class="project-stats">
+            @if ($role=="Admin" || $role=="Dev"): <div class="project-stats">
                 <form action="{{ route('projects.destroy') }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <input type="hidden" name="id" value="{{ $project->id }}">
                     <button type="submit" class="submit-button">delete</button>
                 </form>
-            </div>
+            </div> 
 
             <div class="project-stats">
                 <a href="{{ route('projects.edit', $project->id) }}" class="submit-button">Edit</a>
-            </div>
+            </div> @endif
         </div>
     </section>
 </main>

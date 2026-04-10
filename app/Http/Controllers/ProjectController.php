@@ -33,6 +33,7 @@ class ProjectController extends Controller
         return view('projects.projects', [
             "projects" => $projects, 
             "tickets" => $tickets,
+            "role" => $user->role,
         ]);
     }
     
@@ -106,6 +107,7 @@ class ProjectController extends Controller
             "devs" => $devs,
             "length" => $length,
             "tickets" => $tickets,
+            "role" => $user->role,
         ]);
     }
     

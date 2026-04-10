@@ -5,7 +5,7 @@
     <section class="page-section">
         <div class="page-header">
             <h2>Projects</h2>
-            <a href="{{ route('new_project') }}" class="btn btn-primary">+ New Project</a>
+            @if ($role=="Admin" || $role=="Dev"): <a href="{{ route('new_project') }}" class="btn btn-primary">+ New Project</a> @endif
         </div>
 
         <div class="search-bar">

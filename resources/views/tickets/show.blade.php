@@ -56,12 +56,12 @@
         </table>
 
         <div class="ticket-header">
-            <form action="{{ route('tickets.destroy') }}" method="POST">
+            @if ($role=="Admin" || $role=="Dev"): <form action="{{ route('tickets.destroy') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <input type="hidden" name="id" value="{{ $ticket->id }}">
                 <button type="submit" class="submit-button">delete</button>
-            </form>
+            </form> @endif
             <a href="{{ route('tickets.edit', $ticket->id) }}" class="submit-button">Edit</a>
         </div>
 
@@ -96,18 +96,18 @@
                             <td>{{$entry->created_at}}</td>
                             <td>{{$entry->length}}h</td>
                             <td>{{$entry->comment}}</td>
-                            <td><form action="{{ route('tickets.removeEntry') }}" method="POST">
+                            @if ($role=="Admin" || $role=="Dev"): <td><form action="{{ route('tickets.removeEntry') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" name="id" value="{{ $entry->id }}">
                                 <button type="submit" class="submit-button">delete</button>
-                            </form></td>
+                            </form></td> @endif
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
-            <div class="add-time-entry">
+            @if ($role=="Admin" || $role=="Dev"): <div class="add-time-entry">
                 <h4>Add New Time Entry</h4>
                 <form class="time-entry-form" id="time-entry-form" action="{{ route('tickets.addEntry', $ticket->id)}}" method="POST">
                     @csrf
@@ -128,7 +128,7 @@
                     </div>
                     <button type="submit" class="submit-button">Add Entry</button>
                 </form>
-            </div>
+            </div> @endif
         </section>
     </section>
 </main>

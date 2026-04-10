@@ -5,10 +5,10 @@
     <section class="page-section" data-ticket-page data-open-on-load="{{ request()->boolean('create') ? 'true' : 'false' }}">
         <div class="page-header">
             <h2>Tickets</h2>
-            <div>
+            @if ($role=="Admin" || $role=="Dev"): <div>
                 <button type="button" class="btn btn-secondary" data-open-ticket-modal>Quick Create</button>
-                <a href="{{ route('new_ticket') }}" class="btn btn-primary">+ New Ticket</a>
-            </div>
+                <a href="{{ route('new_ticket') }}" class="btn btn-primary">+ New Ticket</a> 
+            </div> @endif
         </div>
 
         <div class="filters">
