@@ -16,7 +16,7 @@ Cette application web est une plateforme de gestion de projets et de tickets. El
 ### Rôles des utilisateurs
 
 - **Administrateur** : possède tous les droits disponibles et peut voir tous les projets et tous les tickets. Il a également accès à la page de modification des rôles des utilisateurs.
-- **Développeur** : ne peut voir que les projets et les tickets sur lesquels il travaille. Il peut créer, modifier et supprimer des tickets, mais ne peut ni créer ni modifier ni supprimer des projets. Il peut créer des entrées de temps pour un ticket.
+- **Développeur** : ne peut voir que les projets et les tickets sur lesquels il travaille. Il peut créer, modifier et supprimer des tickets et des projets. Il peut créer des entrées de temps pour un ticket.
 - **Client** : peut voir ses projets et les tickets liés à ce projet. Il ne peut ni créer ni modifier ni supprimer des projets. Il ne peut pas créer, modifier ou supprimer de tickets. Il ne peut pas créer d'entrées de temps, mais il peut valider ou refuser un ticket facturable lorsque le développeur l'a terminé.
 
 ### Connexion à un compte
