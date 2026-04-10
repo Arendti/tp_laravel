@@ -271,3 +271,86 @@ filterSelects.forEach(select => {
 //         document.getElementById(sectionId).classList.add('active');
 //     });
 // });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const ticketPage = document.querySelector('[data-ticket-page]');
+    if (!ticketPage) {
+        return;
+    }
+
+    const modal = ticketPage.querySelector('[data-ticket-modal]');
+    const openButtons = ticketPage.querySelectorAll('[data-open-ticket-modal]');
+    const closeButtons = ticketPage.querySelectorAll('[data-close-ticket-modal]');
+    const openOnLoad = ticketPage.dataset.openOnLoad === 'true';
+
+    if (!modal) {
+        return;
+    }
+
+    const openModal = () => {
+        if (typeof modal.showModal === 'function') {
+            if (!modal.open) {
+                modal.showModal();
+            }
+        } else {
+            modal.style.display = 'block';
+            modal.setAttribute('open', '');
+        }
+    };
+
+    const closeModal = () => {
+        if (typeof modal.close === 'function') {
+            if (modal.open) {
+                modal.close();
+            }
+        } else {
+            modal.style.display = 'none';
+            modal.removeAttribute('open');
+        }
+    };
+
+    openButtons.forEach((button) => {
+        button.addEventListener('click', openModal);
+    });
+
+    closeButtons.forEach((button) => {
+        button.addEventListener('click', closeModal);
+    });
+
+    modal.addEventListener('click', (event) => {
+        const rect = modal.getBoundingClientRect();
+        const clickedOutside =
+            event.clientX < rect.left ||
+            event.clientX > rect.right ||
+            event.clientY < rect.top ||
+            event.clientY > rect.bottom;
+
+        if (clickedOutside) {
+            closeModal();
+        }
+    });
+
+    if (openOnLoad) {
+        openModal();
+    }
+
+    const ticketForm = document.querySelector('[data-ticket-api-form]');
+    const ticketSubmitButton = ticketForm?.querySelector('[data-ticket-submit-button]');
+
+    if (ticketForm && ticketSubmitButton) {
+        const requiredFields = Array.from(ticketForm.querySelectorAll('input[required], textarea[required], select[required]'));
+
+        const validateTicketForm = () => {
+            const isValid = requiredFields.every((field) => field.value.trim() !== '');
+            ticketSubmitButton.disabled = !isValid;
+        };
+
+        requiredFields.forEach((field) => {
+            field.addEventListener('input', validateTicketForm);
+            field.addEventListener('change', validateTicketForm);
+        });
+
+        validateTicketForm();
+    }
+});

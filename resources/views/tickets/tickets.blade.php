@@ -2,10 +2,13 @@
 
 @section('content')
 <main class="container">
-    <section class="page-section">
+    <section class="page-section" data-ticket-page data-open-on-load="{{ request()->boolean('create') ? 'true' : 'false' }}">
         <div class="page-header">
             <h2>Tickets</h2>
-            <a href="{{ route('new_ticket') }}" class="btn btn-primary">+ New Ticket</a>
+            <div>
+                <button type="button" class="btn btn-secondary" data-open-ticket-modal>Quick Create</button>
+                <a href="{{ route('new_ticket') }}" class="btn btn-primary">+ New Ticket</a>
+            </div>
         </div>
 
         <div class="filters">
@@ -45,7 +48,7 @@
                     <th>Included</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody data-ticket-list>
             @foreach($tickets as $ticket)
                 <tr>
                     <td>{{ $ticket->id }}</td>
@@ -59,6 +62,62 @@
             @endforeach
             </tbody>
         </table>
+
+        <dialog class="ticket-modal" data-ticket-modal aria-labelledby="ticket-modal-title">
+            <div class="ticket-modal-content">
+                <div class="ticket-modal-header">
+                    <h2 id="ticket-modal-title">Quick ticket creation</h2>
+                    <button type="button" class="ticket-icon-button" data-close-ticket-modal aria-label="Fermer">&times;</button>
+                </div>
+
+                <form action="{{ route('api.tickets.store') }}" method="POST" class="ticket-form" data-ticket-api-form>
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                    
+                    <label for="ticket-name">Title</label>
+                    <input id="ticket-name" type="text" name="Ticket_Name" required maxlength="255">
+                    
+                    <label for="project-name">Project</label>
+                    <select name="Project_Name" required>
+                        <option value="">Select a project</option>
+                        @foreach($projects ?? [] as $project)
+                            <option value="{{ $project->id }}">{{ $project->project_title }}</option>
+                        @endforeach
+                    </select>
+                    
+                    <label for="ticket-description">Description</label>
+                    <textarea name="Ticket_Description" required></textarea>
+                    
+                    <label for="status">Status</label>
+                    <select name="Status" required>
+                        <option value="new">New</option>
+                        <option value="in progress">In Progress</option>
+                        <option value="waiting client">Waiting Client</option>
+                        <option value="waiting validation">Waiting Validation</option>
+                        <option value="done">Done</option>
+                        <option value="refused">Refused</option>
+                    </select>
+                    
+                    <label for="priority">Priority</label>
+                    <select name="Priority" required>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                    
+                    <label for="type">Type</label>
+                    <select name="Type" required>
+                        <option value="1">Included</option>
+                        <option value="0">Chargeable</option>
+                    </select>
+
+                    <div class="ticket-form-actions">
+                        <button type="button" class="ticket-secondary-button" data-close-ticket-modal>Cancel</button>
+                        <button type="submit" class="ticket-primary-button" data-ticket-submit-button disabled>Send</button>
+                    </div>
+                </form>
+            </div>
+        </dialog>
     </section>
 </main>
 @endsection

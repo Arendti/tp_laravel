@@ -17,13 +17,16 @@ class TicketController extends Controller
         $user = auth()->user();
         if ($user->role == 'Admin'){
             $tickets = Ticket::all();
+            $projects = Project::all();
         }
         elseif ($user->role == 'Dev'){
             $tickets = $user->tickets;
+            $projects = $user->projects;
         }
 
         return view('tickets.tickets', [
             "tickets" => $tickets, 
+            "projects" => $projects,
         ]);
     }
 
@@ -79,10 +82,6 @@ class TicketController extends Controller
     {
         $user = auth()->user();
         
-        if ($user->role != 'Admin' && $user->role != 'Dev'){
-            return redirect()->route('tickets');
-        }
-
         $validated = $request->validate([
             'Project_Name' => ['required', 'integer'],
             'Ticket_Name' => ['required', 'string', 'max:255'],
@@ -91,6 +90,12 @@ class TicketController extends Controller
             'Priority' => ['required', 'string', 'max:255'],
             'Type' => ['required', 'string'],
         ]);
+
+        $project = Project::find($validated['Project_Name']);
+        
+        if ($user->role != 'Admin' && $project->devs->contains($user)){
+            return redirect()->route('tickets');
+        }
 
         $ticket = Ticket::create([
             "project_id" => $validated['Project_Name'],
@@ -104,6 +109,52 @@ class TicketController extends Controller
         $ticket->users()->attach($user->id); // Attach the authenticated user
 
         return redirect()->route('tickets');
+    }
+
+    public function storeApi(Request $request)
+    {        
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'Project_Name' => ['required', 'integer'],
+            'Ticket_Name' => ['required', 'string', 'max:255'],
+            'Ticket_Description' => ['required', 'string', 'max:255'],
+            'Status' => ['required', 'string', 'max:255'],
+            'Priority' => ['required', 'string', 'max:255'],
+            'Type' => ['required', 'string'],
+        ]);
+
+        $user = User::find($validated['user_id']);
+        $project = Project::find($validated['Project_Name']);
+        
+        if ($user->role != 'Admin' && $project->devs->contains($user)){
+            return response()->json([
+                'message' => 'Ticket refused.',
+            ], 201);
+        }
+
+        $ticket = Ticket::create([
+            "project_id" => $validated['Project_Name'],
+            "ticket_title" => $validated['Ticket_Name'],
+            "ticket_description" => $validated['Ticket_Description'],
+            "ticket_status" => $validated['Status'],
+            "ticket_priority" => $validated['Priority'],
+            "ticket_included" => $validated['Type'],
+        ]);
+        
+        $ticket->users()->attach($user);
+
+
+        return response()->json([
+            'message' => 'Ticket ajoute avec succes.',
+            'ticket' => [
+                'id' => $ticket->id,
+                'title' => $ticket->ticket_title,
+                'user_name' => $user->name,
+                'show_url' => route('tickets.show', $ticket->id),
+                'edit_url' => route('tickets.edit', $ticket->id),
+                'destroy_url' => route('tickets.destroy'),
+            ],
+        ], 201);
     }
 
     public function addEntry(Request $request, $id)
