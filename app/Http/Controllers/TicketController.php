@@ -23,6 +23,14 @@ class TicketController extends Controller
             $tickets = $user->tickets;
             $projects = $user->projects;
         }
+        elseif ($user->role == 'Client'){
+            $projects = Project::where('client_id', $user->id)->get();
+            $tickets = Ticket::whereIn('project_id', $projects->pluck('id'))->get();
+        }
+        else {
+            $tickets = collect();
+            $projects = collect();
+        }
 
         return view('tickets.tickets', [
             "tickets" => $tickets, 
@@ -38,6 +46,13 @@ class TicketController extends Controller
         }
         elseif ($user->role == 'Dev'){
             $tickets = $user->tickets;
+        }
+        elseif ($user->role == 'Client'){
+            $projectIds = Project::where('client_id', $user->id)->pluck('id');
+            $tickets = Ticket::whereIn('project_id', $projectIds)->get();
+        }
+        else {
+            $tickets = collect();
         }
         $statusCounts = [
             'new' => 0,
@@ -71,6 +86,9 @@ class TicketController extends Controller
         }
         elseif ($user->role == 'Dev'){
             $projects = $user->projects;
+        }
+        else {
+            return redirect()->route('tickets');
         }
 
         return view('tickets.new_ticket', [
@@ -214,7 +232,7 @@ class TicketController extends Controller
         
         $user = auth()->user();
         
-        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+        if ($user->role != 'Admin' && !$ticket->users->contains($user) && Project::where('id', $ticket->project_id)->value('client_id') != $user->id){
             return redirect()->route('tickets');
         }
 
@@ -234,7 +252,7 @@ class TicketController extends Controller
         
         $user = auth()->user();
         
-        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+        if ($user->role != 'Admin' && !$ticket->users->contains($user)&& Project::where('id', $ticket->project_id)->value('client_id') != $user->id){
             return redirect()->route('tickets');
         }
 
@@ -243,6 +261,9 @@ class TicketController extends Controller
         }
         elseif ($user->role == 'Dev'){
             $projects = $user->projects;
+        }
+        elseif ($user->role == 'Client'){
+            $projects = Project::where('client_id', $user->id)->get();
         }
 
         return view('tickets.edit', [
@@ -257,7 +278,7 @@ class TicketController extends Controller
         
         $user = auth()->user();
         
-        if ($user->role != 'Admin' && !$ticket->users->contains($user)){
+        if ($user->role != 'Admin' && !$ticket->users->contains($user) && Project::where('id', $ticket->project_id)->value('client_id') != $user->id){
             return redirect()->route('tickets');
         }
 

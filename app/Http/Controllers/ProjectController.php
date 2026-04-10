@@ -18,6 +18,12 @@ class ProjectController extends Controller
         elseif ($user->role == 'Dev'){
             $projects = $user->projects;
         }
+        elseif ($user->role == 'Client'){
+            $projects = Project::where('client_id', $user->id)->get();
+        }
+        else {
+            $projects = collect();
+        }
 
         $tickets = [];
         foreach ($projects as $project){
@@ -38,6 +44,9 @@ class ProjectController extends Controller
         }
         elseif ($user->role == 'Dev'){
             $devs = User::where('id', $user->id)->get();
+        }
+        else {
+            return redirect()->route('projects');
         }
 
         $clients = User::where('role', 'Client')->get();

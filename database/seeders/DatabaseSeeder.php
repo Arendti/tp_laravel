@@ -32,6 +32,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test2@example.com',
             'role' => 'Dev',
         ]);
+        
+        User::factory()->create([
+            'name' => 'Test3 User3',
+            'email' => 'test3@example.com',
+            'role' => 'Client',
+        ]);
 
         // ─── Config ───────────────────────────────────────────
         $clientIds = User::whereIn('role', ['Client'])->pluck('id')->toArray();
