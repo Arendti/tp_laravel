@@ -86,14 +86,14 @@ class TicketController extends Controller
             'Project_Name' => ['required', 'integer'],
             'Ticket_Name' => ['required', 'string', 'max:255'],
             'Ticket_Description' => ['required', 'string', 'max:255'],
-            'Status' => ['required', 'string', 'max:255'],
+            // 'Status' => ['required', 'string', 'max:255'],
             'Priority' => ['required', 'string', 'max:255'],
             'Type' => ['required', 'string'],
         ]);
 
         $project = Project::find($validated['Project_Name']);
         
-        if ($user->role != 'Admin' && $project->devs->contains($user)){
+        if ($user->role != 'Admin' && !$project->devs->contains($user)){
             return redirect()->route('tickets');
         }
 
@@ -101,7 +101,7 @@ class TicketController extends Controller
             "project_id" => $validated['Project_Name'],
             "ticket_title" => $validated['Ticket_Name'],
             "ticket_description" => $validated['Ticket_Description'],
-            "ticket_status" => $validated['Status'],
+            "ticket_status" => "new",
             "ticket_priority" => $validated['Priority'],
             "ticket_included" => $validated['Type'],
         ]);
@@ -126,7 +126,7 @@ class TicketController extends Controller
         $user = User::find($validated['user_id']);
         $project = Project::find($validated['Project_Name']);
         
-        if ($user->role != 'Admin' && $project->devs->contains($user)){
+        if ($user->role != 'Admin' && !$project->devs->contains($user)){
             return response()->json([
                 'message' => 'Ticket refused.',
             ], 201);

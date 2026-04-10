@@ -40,7 +40,7 @@
                 <h3>Ticket Details</h3>
 
                 <div class="form-row">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="ticket-status">Status <span class="required">*</span></label>
                         <select id="ticket-status" name="Status">
                             <option value="">Select status</option>
@@ -52,7 +52,7 @@
                             <option value="refused">Refused</option>
                         </select>
                         <div class="error-text titanic" id="status-error">Status selection is required.</div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label for="ticket-priority">Priority <span class="required">*</span></label>

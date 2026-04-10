@@ -27,7 +27,11 @@ class DatabaseSeeder extends Seeder
             'role' => 'Admin',
         ]);
 
-        // fake() = Faker::create();
+        User::factory()->create([
+            'name' => 'Test2 User2',
+            'email' => 'test2@example.com',
+            'role' => 'Dev',
+        ]);
 
         // ─── Config ───────────────────────────────────────────
         $clientIds = User::whereIn('role', ['Client'])->pluck('id')->toArray();
