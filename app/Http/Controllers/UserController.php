@@ -17,7 +17,30 @@ class UserController extends Controller
         }
 
         return view('users.users', [
-            "users" => User::all(),
+            "users" => User::where('role', '!=', 'Admin')->get(),
         ]);
+    }
+
+    public function edit(Request $request)
+    {
+        $user = auth()->user();
+        if ($user->role != 'Admin'){
+            return redirect()->route('dashboard');
+        }
+        
+        $validated = $request->validate([
+            'id' => ['required', 'integer'],
+            'role' => ['required', 'string', 'max:255'],
+        ]);
+
+        if (User::find($validated['id'])->role == "Admin"){
+            return redirect()->route('dashboard');
+        }
+
+        User::find($validated['id'])->update([
+            "role" => $validated['role'],
+        ]);
+
+        return redirect()->route('users');
     }
 }

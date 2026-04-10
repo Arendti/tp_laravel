@@ -27,9 +27,21 @@
             <tbody data-ticket-list>
             @foreach($users as $user)
                 <tr>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->role }}</td>
-                    <td>{{ $user->email }}</td>
+                    <form action="{{ route('users.edit') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <td>{{ $user->name }}</td>
+                        <td><select id="role" name="role">
+                            <option value="">Guest</option>
+                            <option value="Dev" @if ($user->role == "Dev"): selected @endif>Dev</option>
+                            <option value="Client" @if ($user->role == "Client"): selected @endif>Client</option>
+                        </select></td>
+                        <td>{{ $user->email }}</td>
+                        <td>
+                            <input type="hidden" name="id" value="{{ $user->id }}">
+                            <button type="submit" class="submit-button">edit</button>
+                        </td>
+                    </form>
                 </tr>
             @endforeach
             </tbody>

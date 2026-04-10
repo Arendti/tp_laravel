@@ -49,4 +49,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/destroy', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
     Route::get('/users', [UserController::class, 'users'])->name('users');
+    Route::put('/users', [UserController::class, 'edit'])->name('users.edit');
 });
